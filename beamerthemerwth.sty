@@ -1,0 +1,272 @@
+\ProvidesPackage{beamerthemerwth}[2024/04/14]
+
+%Requirements
+\RequirePackage{xcolor}
+\RequirePackage{ifluatex}
+\RequirePackage{ifxetex}
+\RequirePackage{calc}
+
+
+\mode<presentation>
+\newif\if@showtotalframes\@showtotalframesfalse
+\DeclareOption{showtotalframes}{\@showtotalframestrue}
+
+\newif\if@dark\@darkfalse
+\DeclareOption{dark}{\@darktrue}
+\ProcessOptions
+
+\setbeamersize{text margin left=15pt, text margin right=15pt}
+\usefonttheme{professionalfonts}
+
+
+% If xelatex or lualatex, use fontspec to set fonts
+\newif\if@fontspec\@fontspecfalse
+\ifluatex%
+  \@fontspectrue
+\else
+  \ifxetex
+    \@fontspectrue
+  \fi
+\fi
+
+\if@fontspec
+  \RequirePackage{fontspec}
+  \PassOptionsToPackage{mathrm=sym}{unicode-math}
+  \RequirePackage{unicode-math}
+  \setsansfont{FiraSans}[
+    Scale=MatchLowercase,
+    BoldFont=FiraSans Medium,
+    ItalicFont=FiraSans Italic
+  ]
+  %}
+  \setmonofont{Fira Mono}[Scale=MatchLowercase]
+  \setmathfont{Fira Math}[Scale=MatchLowercase]
+\else
+  \usepackage{FiraSans}
+\fi
+
+\setbeamertemplate{navigation symbols}{}
+
+
+%% headline
+\newlength{\headerheight}
+\setlength{\headerheight}{0.08\paperheight}
+\setbeamertemplate{headline}
+{%
+  \vspace*{10pt}%
+  \leavevmode
+  \begin{beamercolorbox}[
+      wd=0.4\paperwidth,
+      ht=\headerheight,
+      leftskip=\beamer@leftmargin,
+      rightskip=1em,
+    ]{headline}%
+    % \if@dark%
+    %   \includegraphics[height=\headerheight]{logos/SiScLogo.pdf}%
+    % \else%
+    %   \includegraphics[height=\headerheight]{logos/SiScLogo.pdf}%
+    % \fi%
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[
+      wd=0.6\paperwidth,
+      ht=\headerheight,
+      leftskip=1em,
+      rightskip=\beamer@rightmargin,
+    ]{headline}%
+    \usebeamerfont{institute in head/foot}\hfill\insertshortinstitute[respectlinebreaks]
+    \if@dark%
+      \includegraphics[height=\headerheight]{logos/SiScLogo.pdf}%
+    \else%
+      \includegraphics[height=\headerheight]{logos/SiScLogo.pdf}%
+    \fi%
+  \end{beamercolorbox}%
+  \vskip2ex%
+  \ifnum\insertframenumber=1%
+    \vspace{0.4pt}%
+  \else%
+    \hspace{\beamer@leftmargin}%
+    \usebeamercolor{separation line}%
+    \rule{\paperwidth-\beamer@leftmargin-\beamer@rightmargin}{0.4pt}%
+  \fi
+  \vskip2ex
+}
+
+
+\newlength{\footerleftwidth}
+\setlength{\footerleftwidth}{0.2\paperwidth}
+\newlength{\footercenterwidth}
+\setlength{\footercenterwidth}{0.6\paperwidth}
+\newlength{\footerrightwidth}
+\setlength{\footerrightwidth}{0.2\paperwidth - \beamer@rightmargin}
+
+\setbeamertemplate{footline}
+{%
+  \ifnum\insertframenumber=1%
+  \else%
+    \leavevmode%
+    \begin{beamercolorbox}[
+        wd=\footerleftwidth,
+        ht=4ex,
+        dp=10pt,
+        leftskip=\beamer@leftmargin,
+      ]{author in head/foot}%
+      {\usebeamerfont{author in head/foot}\insertshortauthor}%
+      \ifx\beamer@shortdate\empty\else%
+        ~|~{\usebeamerfont{date in head/foot}\insertshortdate}%
+      \fi%
+    \end{beamercolorbox}%
+    % \begin{beamercolorbox}[
+    %     wd=\footercenterwidth,
+    %     ht=3ex,
+    %     dp=10pt,
+    %     center,
+    %   ]{section in head/foot}%
+    %   \ifx\insertsection\empty%
+    %   \else%
+    %     \usebeamerfont{section in head/foot}\insertsection%
+    %     \ifx\insertsubsection\empty%
+    %     \else%
+    %       :~\usebeamerfont{subsection in head/foot}\insertsubsection%
+    %     \fi
+    %   \fi%
+    % \end{beamercolorbox}%
+    \hspace*{\footercenterwidth}%
+    \begin{beamercolorbox}[
+        wd=\footerrightwidth,
+        ht=4ex,
+        dp=10pt,
+      ]{frame}%
+      \raggedleft%
+      \usebeamerfont{framenumber}\insertframenumber%
+      \if@showtotalframes%
+        ~/~\inserttotalframenumber%
+      \fi%
+    \end{beamercolorbox}%
+  \fi%
+}
+
+\setbeamertemplate{title page}
+{
+  \ifx\inserttitlegraphic\empty%
+  \else%
+    \begin{beamercolorbox}[center, wd=\textwidth]{titlegraphic}
+      \inserttitlegraphic%
+    \end{beamercolorbox}%
+    \vspace{10pt}%
+  \fi%
+  \ifx\inserttitle\empty\else%
+    \begin{beamercolorbox}[center, wd=\textwidth]{title}
+      \textcolor{rwthdarkblue}{\rule{\textwidth}{1pt}}\\[0.5\baselineskip]%
+      \vspace{-0.5\baselineskip}
+      \usebeamerfont{title}\inserttitle
+      \vspace{-0.25\baselineskip}
+      \ifx\insertsubtitle\empty%
+        \newline%
+      \else%
+        \\[0.5\baselineskip]%
+        \usebeamerfont{subtitle}%
+        \insertsubtitle\newline%
+      \fi%
+      \textcolor{rwthdarkblue}{\rule{\textwidth}{1pt}}%
+    \end{beamercolorbox}%
+    \vspace{\fill}
+  \fi%
+  \ifx\insertauthor\empty%
+  \else%
+    \begin{beamercolorbox}[leftskip=0.2\textwidth, rightskip=0.2\textwidth, wd=\textwidth]{author}
+      \centering\usebeamerfont{author}\insertauthor%
+    \end{beamercolorbox}%
+    \vspace{1ex}%
+  \fi%
+  \ifx\insertdate\empty%
+  \else%
+    \begin{beamercolorbox}[leftskip=0.2\textwidth, rightskip=0.2\textwidth, wd=\textwidth]{date}
+      \centering\usebeamerfont{date}\insertdate%
+    \end{beamercolorbox}%
+    \vspace{1ex}%
+  \fi%
+  \ifx\insertinstitute\empty%
+  \else%
+    \begin{beamercolorbox}[leftskip=0.2\textwidth, rightskip=0.2\textwidth, wd=\textwidth]{institute}
+      \centering\usebeamerfont{institute}\insertinstitute%
+    \end{beamercolorbox}%
+  \fi%
+  \vspace{\fill}
+}
+
+\setbeamertemplate{itemize items}[square]
+
+\setbeamertemplate{frametitle}{%
+  \vspace{-2ex}%
+  \begin{center}%
+    \usebeamerfont{frametitle}\insertframetitle%
+    \vspace{-2ex}%
+  \end{center}%
+}
+
+
+%% fonts
+\setbeamerfont{author}{size=\normalsize}
+\setbeamerfont{title}{size=\Large, series=\bfseries}
+\setbeamerfont{date}{size=\small, series=\bfseries}
+
+\setbeamerfont{frametitle}{size=\large, series=\bfseries}
+\setbeamerfont{framenumber}{series=\bfseries}
+
+\setbeamerfont{institute}{size=\small}
+\setbeamerfont{section in head/foot}{size=\scriptsize}
+\setbeamerfont{subsection in head/foot}{size=\footnotesize}
+\setbeamerfont{institute in head/foot}{size=\large}
+
+
+\setbeamerfont{item}{series=\bfseries}
+\setbeamerfont{itemize/enumerate body}{size=\normalfont}
+\setbeamerfont{itemize/enumerate subbody}{size=\normalfont}
+\setbeamerfont{itemize/enumerate subsubbody}{size=\normalfont}
+
+
+\setbeamerfont{block title}{series=\bfseries}
+\setbeamerfont{section in toc}{series=\bfseries}
+
+
+%% colors
+\xdefinecolor{darkmode}{HTML}{222326}
+\xdefinecolor{rwthdarkblue}{RGB}{0, 84, 159}
+\xdefinecolor{rwthmediumblue}{RGB}{64, 127, 184}
+\xdefinecolor{rwthlightblue}{RGB}{142, 186, 229}
+\xdefinecolor{rwthdarkgreen}{RGB}{87, 171, 39}
+\xdefinecolor{rwthlightgreen}{RGB}{184, 214, 152}
+
+% selection of the main colors for the light/dark themes
+\if@dark%
+  \colorlet{maincolor}{darkmode}% background color
+  \colorlet{fgcolor}{white}% foreground color, e.g. for text
+  \hypersetup{colorlinks=true, linkcolor=lightgray, urlcolor=rwthdarkblue}
+\else%
+  \colorlet{maincolor}{white}%
+  \colorlet{fgcolor}{darkgray}%
+  \hypersetup{colorlinks=true, linkcolor=darkgray, urlcolor=rwthlightblue}
+\fi
+
+\setbeamercolor{section in head/foot}{fg=rwthdarkblue, bg=maincolor}
+\setbeamercolor{framenumber}{fg=rwthdarkblue, bg=maincolor}
+
+\setbeamercolor{normal text}{fg=fgcolor, bg=maincolor}
+\setbeamercolor{alerted text}{fg=rwthdarkgreen, bg=maincolor}
+\setbeamercolor{palette primary}{fg=fgcolor, bg=maincolor}
+\setbeamercolor{palette secondary}{fg=rwthdarkblue, bg=maincolor}
+
+\setbeamercolor{title}{fg=fgcolor, bg=maincolor}
+\setbeamercolor{structure}{fg=rwthdarkblue, bg=maincolor}
+
+\setbeamercolor{frametitle}{fg=rwthdarkblue, bg=maincolor}
+
+\setbeamercolor{item}{fg=rwthdarkblue, bg=maincolor}
+
+\setbeamercolor{block title}{fg=maincolor, bg=rwthdarkblue}
+\setbeamercolor{block body}{fg=fgcolor, bg=rwthlightblue}
+
+\setbeamercolor{section number in toc}{fg=rwthdarkblue, bg=maincolor}
+\setbeamercolor{section in toc}{fg=fgcolor, bg=maincolor}
+
+\mode<all>

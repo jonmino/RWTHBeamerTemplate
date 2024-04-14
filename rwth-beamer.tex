@@ -1,0 +1,135 @@
+% This example is meant to be compiled with lualatex or xelatex
+% The theme itself also supports pdflatex
+\PassOptionsToPackage{unicode}{hyperref}
+\documentclass[aspectratio=1610, 17pt]{beamer}
+
+% Load packages you need here
+\usepackage{polyglossia}
+\usepackage{beamerappendixnote}
+\usepackage{xfrac}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{tikz}
+\setmainlanguage{german} % Change this to your language
+% \setbeamerfont{button}{size=\scriptsize}
+\setbeamertemplate{button}{\tikz\node[inner xsep = 5pt,
+draw = structure!90,
+fill=structure!40, 
+rounded corners = 5pt]{\scriptsize\insertbuttontext};}
+\setbeamercolor{button}{bg=rwthdarkblue,fg=black}
+
+\let\oldFootnote\footnote
+\newcommand\nextToken\relax
+
+\renewcommand\footnote[1]{%
+    \oldFootnote{#1}\futurelet\nextToken\isFootnote}
+
+\newcommand\isFootnote{%
+    \ifx\footnote\nextToken\textsuperscript{,}\fi}
+
+\usepackage{csquotes}
+
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+
+\usepackage{hyperref}
+\usepackage{bookmark}
+\usepackage[
+  locale=DE,
+  separate-uncertainty=true,
+  per-mode=symbol-or-fraction,
+]{siunitx}
+\usepackage{subcaption}
+
+% Captions schöner machen.
+\usepackage[
+  font=small,          % Schrift etwas kleiner als Dokument
+  width=0.9\textwidth, % maximale Breite einer Caption schmaler
+  skip=3pt,            % Abstand zwischen Caption und Text, 10pt ist default
+]{caption}
+
+\usepackage[
+  version=4,
+  math-greek=default, % ┐ mit unicode-math zusammenarbeiten
+  text-greek=default, % ┘
+]{mhchem} % chemische Formeln, zur Notation von Isotopen: \ce{^{227}_{90}Th+}
+
+% load the theme after all packages
+
+\usetheme[
+  % showtotalframes, % show total number of frames in the footline
+  % dark, % optional dark theme, uncomment to use
+]{rwth}
+
+% Put settings here, like
+\unimathsetup{
+  math-style=ISO,
+  bold-style=ISO,
+  nabla=upright,
+  partial=upright,
+  mathrm=sym,
+}
+
+\newcommand{\source}[1]{{\centering\caption*{\scriptsize\textcolor{tugreen}{Quelle:} \centering {#1}}}}
+\newcommand{\dd}{\symup{d}}
+
+\title{Example title} % Put your title here
+\subtitle{Subtitle} % Put your subtitle here, leave empty to not use a subtitle
+\author[J.~Minor]{Jonas Minor} % Put your name here
+\date{31. August 2023} % Put the date here
+\institute[]{Simulation Sciences} % Put your institute here
+% \titlegraphic{\includegraphics[width=0.5\textwidth]{images/Cover.png}} % Put the titlegraphic here
+
+\begin{document}
+
+\maketitle
+
+\begin{frame}{Motivation}
+  \begin{itemize}
+    \item Example
+    \item itemize 
+          \begin{itemize}
+            \item Sub
+            \item Points
+          \end{itemize}
+    \item End
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Outlook}
+  \begin{itemize}
+        \item Some final Points
+  \end{itemize}
+  \vspace{0cm}
+  \centering{\only<1>{}\only<2>{\Large{\color{rwthdarkblue}{Thank you for your attention \\ Any questions?}}}} % Only is used to hide the text when the slide is shown first
+\end{frame}
+
+\begin{frame}
+  \centering
+  \Huge{\color{rwthdarkblue}{\textbf{Backup}}}
+\end{frame}
+
+\printappxnotes
+
+\begin{frame}{Example Appendix}
+  \vspace{-1ex}
+  \small
+  \begin{equation*}
+    \frac{\dd E}{\dd x} = {\left(\frac{\dd E}{\dd x}\right)}_\text{Ion} + {\left(\frac{\dd E}{\dd x}\right)}_\text{Brems}
+  \end{equation*}
+  \begin{equation*}
+    - {\left(\frac{\dd E}{\dd x}\right)}_\text{Ion} = 2 \pi N_\text{A} r_\text{e}^2 m_\text{e} c^2 \rho \frac{Z}{A} \frac{1}{\beta^2} \left[ \!\ln \left(\frac{\tau^2 \left(\tau + 2\right)}{2 {\left(\frac{I}{m_\text{e}}\right)}^2}\right) - F \!\left(\tau\right) - \delta - 2\frac{C_\text{s}}{Z} \right]
+  \end{equation*}
+  \begin{center}
+    \vspace{-0em}
+    \footnotesize
+    $\tau$: kinetic energy of $m_\text{e} c^2$, $\rho$: density, $I$: average excitation potential, $C_\text{s}$: correction, $F(\tau) = 1 - \beta^2 + \frac{\tau^2 - 8 \left(2 \tau + 1\right) \ln \left(2\right)}{8 {\left(\tau + 1\right)}^2}$
+  \end{center}
+  \begin{equation*}
+    - {\left(\frac{\dd E}{\dd x}\right)}_\text{Brems} = \frac{4}{137} r_\text{e}^2 N_\text{A} \frac{Z^2}{A} m_\text{e} c^2 \tau \left(\ln \!\left(2 \left(\tau + 1\right)\right) - \sfrac{1}{3}\right)
+  \end{equation*}
+\end{frame}
+
+\end{document}
